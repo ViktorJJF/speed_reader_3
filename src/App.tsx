@@ -4,7 +4,6 @@ import { ConfigProvider } from 'antd';
 import { ThemeProvider } from 'styled-components';
 import MainLayout from './layouts/MainLayout';
 import TrainingView from './views/TrainingView';
-import ExerciseView from './views/ExerciseView';
 import EL1View from './views/EL1View';
 import EL2View from './views/EL2View';
 import EL3View from './views/EL3View';
@@ -12,6 +11,9 @@ import EO1View from './views/EO1View';
 import EO2View from './views/EO2View';
 import EO3View from './views/EO3View';
 import EO4View from './views/EO4View';
+import EPM1View from './views/EPM1View';
+import EPM2View from './views/EPM2View';
+import EPM3View from './views/EPM3View';
 import { theme } from './assets/styles/theme';
 import { GlobalStyles } from './assets/styles/GlobalStyles';
 
@@ -33,7 +35,6 @@ const App: React.FC = () => {
             <Route path="/" element={<MainLayout />}>
               <Route index element={<Navigate to="/training" replace />} />
               <Route path="training" element={<TrainingView />} />
-              <Route path="exercise/:exerciseId" element={<ExerciseView />} />
               <Route path="el1" element={<EL1View />} />
               <Route path="el2" element={<EL2View />} />
               <Route path="el3" element={<EL3View />} />
@@ -41,6 +42,9 @@ const App: React.FC = () => {
               <Route path="eo2" element={<EO2View />} />
               <Route path="eo3" element={<EO3View />} />
               <Route path="eo4" element={<EO4View />} />
+              <Route path="epm1" element={<EPM1View />} />
+              <Route path="epm2" element={<EPM2View />} />
+              <Route path="epm3" element={<EPM3View />} />
               <Route path="progress" element={<div>Progress View (Coming Soon)</div>} />
               <Route path="tests" element={<div>Tests View (Coming Soon)</div>} />
               <Route path="settings" element={<div>Settings View (Coming Soon)</div>} />

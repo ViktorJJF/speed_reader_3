@@ -82,6 +82,7 @@ export const NavMenu: React.FC = () => {
   const location = useLocation();
   const [showELMenu, setShowELMenu] = useState(false);
   const [showEOMenu, setShowEOMenu] = useState(false);
+  const [showEPMMenu, setShowEPMMenu] = useState(false);
 
   const navItems = [
     {
@@ -120,6 +121,12 @@ export const NavMenu: React.FC = () => {
     { key: 'eo4', label: 'EO4' },
   ];
 
+  const epmItems = [
+    { key: 'epm1', label: 'EPM1' },
+    { key: 'epm2', label: 'EPM2' },
+    { key: 'epm3', label: 'EPM3' },
+  ];
+
   const handleELClick = (key: string) => {
     navigate(`/${key}`);
     setShowELMenu(false);
@@ -128,6 +135,11 @@ export const NavMenu: React.FC = () => {
   const handleEOClick = (key: string) => {
     navigate(`/${key}`);
     setShowEOMenu(false);
+  };
+
+  const handleEPMClick = (key: string) => {
+    navigate(`/${key}`);
+    setShowEPMMenu(false);
   };
 
   const handleELButtonClick = (e: React.MouseEvent) => {
@@ -139,6 +151,12 @@ export const NavMenu: React.FC = () => {
   const handleEOButtonClick = (e: React.MouseEvent) => {
     if (!location.pathname.startsWith('/eo')) {
       navigate('/eo1');
+    }
+  };
+
+  const handleEPMButtonClick = (e: React.MouseEvent) => {
+    if (!location.pathname.startsWith('/epm')) {
+      navigate('/epm1');
     }
   };
 
@@ -162,6 +180,20 @@ export const NavMenu: React.FC = () => {
       label: (
         <button
           onClick={() => handleEOClick(item.key)}
+          className={location.pathname === `/${item.key}` ? 'active' : ''}
+        >
+          {item.label}
+        </button>
+      ),
+    })),
+  };
+
+  const epmMenu = {
+    items: epmItems.map((item) => ({
+      key: item.key,
+      label: (
+        <button
+          onClick={() => handleEPMClick(item.key)}
           className={location.pathname === `/${item.key}` ? 'active' : ''}
         >
           {item.label}
@@ -214,7 +246,23 @@ export const NavMenu: React.FC = () => {
             EO
           </Button>
         </Dropdown>
-        <Button onClick={() => navigate('/exercise/epm')}>EPM</Button>
+        <Dropdown
+          menu={epmMenu}
+          trigger={['click']}
+          placement="bottomLeft"
+          open={showEPMMenu}
+          onOpenChange={setShowEPMMenu}
+        >
+          <Button
+            onClick={handleEPMButtonClick}
+            style={{
+              background: location.pathname.startsWith('/epm') ? '#ffffff' : '#666666',
+              color: 'black',
+            }}
+          >
+            EPM
+          </Button>
+        </Dropdown>
         <Button onClick={() => navigate('/exercise/evm')}>EVM</Button>
         <Button onClick={() => navigate('/exercise/emd')}>EMD</Button>
       </ExerciseButtons>
