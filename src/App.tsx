@@ -11,6 +11,7 @@ import EL3View from './views/EL3View';
 import EO1View from './views/EO1View';
 import EO2View from './views/EO2View';
 import EO3View from './views/EO3View';
+import EO4View from './views/EO4View';
 import { theme } from './assets/styles/theme';
 import { GlobalStyles } from './assets/styles/GlobalStyles';
 
@@ -39,6 +40,7 @@ const App: React.FC = () => {
               <Route path="eo1" element={<EO1View />} />
               <Route path="eo2" element={<EO2View />} />
               <Route path="eo3" element={<EO3View />} />
+              <Route path="eo4" element={<EO4View />} />
               <Route path="progress" element={<div>Progress View (Coming Soon)</div>} />
               <Route path="tests" element={<div>Tests View (Coming Soon)</div>} />
               <Route path="settings" element={<div>Settings View (Coming Soon)</div>} />
