@@ -5,7 +5,7 @@ import { useStore } from '../store';
 import { PageHeader, StyledCard, Controls } from '../assets/styles/components';
 import { useNavigate } from 'react-router-dom';
 
-const NumberPairContainer = styled.div`
+const CharacterPairContainer = styled.div`
   display: flex;
   justify-content: center;
   gap: 200px;
@@ -34,20 +34,23 @@ const ControlGroup = styled.div`
   }
 `;
 
-// Generate 40 random number pairs
-const generateNumberPairs = () => {
+// Generate 40 random character pairs
+const generateCharacterPairs = () => {
+  const consonants = 'BCDFGHJKLMNPQRSTVWXYZ'.split('');
+  const vowels = 'AEIOU'.split('');
+
   return Array.from({ length: 40 }, () => ({
-    first: Math.floor(Math.random() * 100),
-    second: Math.floor(Math.random() * 100),
+    first: consonants[Math.floor(Math.random() * consonants.length)],
+    second: vowels[Math.floor(Math.random() * vowels.length)],
   }));
 };
 
-const EL1View: React.FC = () => {
+const EL2View: React.FC = () => {
   const navigate = useNavigate();
   const { isRunning, level, setLevel, startExercise, stopExercise } = useStore();
   const [currentPairIndex, setCurrentPairIndex] = useState(0);
   const [showPair, setShowPair] = useState(false);
-  const [numberPairs] = useState(generateNumberPairs());
+  const [characterPairs] = useState(generateCharacterPairs());
   const [isCompleted, setIsCompleted] = useState(false);
 
   // Calculate display time based on level (lower level = more time)
@@ -69,7 +72,7 @@ const EL1View: React.FC = () => {
       }, displayTime);
 
       const nextPairTimer = setTimeout(() => {
-        if (currentPairIndex < numberPairs.length - 1) {
+        if (currentPairIndex < characterPairs.length - 1) {
           setCurrentPairIndex((prev) => prev + 1);
           setShowPair(true);
         } else {
@@ -83,7 +86,7 @@ const EL1View: React.FC = () => {
         clearTimeout(nextPairTimer);
       };
     }
-  }, [isRunning, currentPairIndex, level, numberPairs.length, isCompleted]);
+  }, [isRunning, currentPairIndex, level, characterPairs.length, isCompleted]);
 
   const handleStartClick = () => {
     if (!isRunning) {
@@ -113,14 +116,14 @@ const EL1View: React.FC = () => {
 
   return (
     <div>
-      <PageHeader>EL1 - Ejercicio de Lectura</PageHeader>
+      <PageHeader>EL2 - Leer la sílaba formada</PageHeader>
       <StyledCard>
         <Controls>
           <ControlGroup>
             <div>
               <label>Ejercicio</label>
               <Select
-                value="EL1"
+                value="EL2"
                 style={{ width: 120 }}
                 disabled={isRunning}
                 onChange={handleExerciseChange}
@@ -155,16 +158,16 @@ const EL1View: React.FC = () => {
         </Controls>
 
         {showPair && !isCompleted && (
-          <NumberPairContainer>
-            <span>{numberPairs[currentPairIndex].first}</span>
-            <span>{numberPairs[currentPairIndex].second}</span>
-          </NumberPairContainer>
+          <CharacterPairContainer>
+            <span>{characterPairs[currentPairIndex].first}</span>
+            <span>{characterPairs[currentPairIndex].second}</span>
+          </CharacterPairContainer>
         )}
 
         {isCompleted && (
           <ResultBox>
             <div>¡Ejercicio completado!</div>
-            <div>Has visto {numberPairs.length} pares de números</div>
+            <div>Has visto {characterPairs.length} pares de letras</div>
           </ResultBox>
         )}
       </StyledCard>
@@ -172,4 +175,4 @@ const EL1View: React.FC = () => {
   );
 };
 
-export default EL1View;
+export default EL2View;

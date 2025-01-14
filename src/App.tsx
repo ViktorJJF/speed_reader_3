@@ -6,6 +6,8 @@ import MainLayout from './layouts/MainLayout';
 import TrainingView from './views/TrainingView';
 import ExerciseView from './views/ExerciseView';
 import EL1View from './views/EL1View';
+import EL2View from './views/EL2View';
+import EL3View from './views/EL3View';
 import { theme } from './assets/styles/theme';
 import { GlobalStyles } from './assets/styles/GlobalStyles';
 
@@ -29,6 +31,8 @@ const App: React.FC = () => {
               <Route path="training" element={<TrainingView />} />
               <Route path="exercise/:exerciseId" element={<ExerciseView />} />
               <Route path="el1" element={<EL1View />} />
+              <Route path="el2" element={<EL2View />} />
+              <Route path="el3" element={<EL3View />} />
               <Route path="progress" element={<div>Progress View (Coming Soon)</div>} />
               <Route path="tests" element={<div>Tests View (Coming Soon)</div>} />
               <Route path="settings" element={<div>Settings View (Coming Soon)</div>} />
