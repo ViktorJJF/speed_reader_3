@@ -48,17 +48,6 @@ const MainLayout: React.FC = () => {
 
   return (
     <StyledLayout>
-      <StyledHeader>
-        <Logo onClick={() => navigate('/')}>
-          <span>S</span>
-          <Title level={2} style={{ color: 'white', margin: 0 }}>
-            Turbo-Speed Reader
-          </Title>
-          <span>S</span>
-        </Logo>
-        <div style={{ color: 'white' }}>Ramón Campayo</div>
-      </StyledHeader>
-
       <NavMenu />
 
       <MainContent>
