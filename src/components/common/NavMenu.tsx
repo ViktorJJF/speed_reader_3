@@ -81,6 +81,7 @@ export const NavMenu: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [showELMenu, setShowELMenu] = useState(false);
+  const [showEOMenu, setShowEOMenu] = useState(false);
 
   const navItems = [
     {
@@ -112,14 +113,32 @@ export const NavMenu: React.FC = () => {
     { key: 'el8', label: 'EL8' },
   ];
 
+  const eoItems = [
+    { key: 'eo1', label: 'EO1' },
+    { key: 'eo2', label: 'EO2' },
+    { key: 'eo3', label: 'EO3' },
+    { key: 'eo4', label: 'EO4' },
+  ];
+
   const handleELClick = (key: string) => {
     navigate(`/${key}`);
     setShowELMenu(false);
   };
 
+  const handleEOClick = (key: string) => {
+    navigate(`/${key}`);
+    setShowEOMenu(false);
+  };
+
   const handleELButtonClick = (e: React.MouseEvent) => {
     if (!location.pathname.startsWith('/el')) {
       navigate('/el1');
+    }
+  };
+
+  const handleEOButtonClick = (e: React.MouseEvent) => {
+    if (!location.pathname.startsWith('/eo')) {
+      navigate('/eo1');
     }
   };
 
@@ -129,6 +148,20 @@ export const NavMenu: React.FC = () => {
       label: (
         <button
           onClick={() => handleELClick(item.key)}
+          className={location.pathname === `/${item.key}` ? 'active' : ''}
+        >
+          {item.label}
+        </button>
+      ),
+    })),
+  };
+
+  const eoMenu = {
+    items: eoItems.map((item) => ({
+      key: item.key,
+      label: (
+        <button
+          onClick={() => handleEOClick(item.key)}
           className={location.pathname === `/${item.key}` ? 'active' : ''}
         >
           {item.label}
@@ -164,7 +197,23 @@ export const NavMenu: React.FC = () => {
             EL
           </Button>
         </Dropdown>
-        <Button onClick={() => navigate('/exercise/eo')}>EO</Button>
+        <Dropdown
+          menu={eoMenu}
+          trigger={['click']}
+          placement="bottomLeft"
+          open={showEOMenu}
+          onOpenChange={setShowEOMenu}
+        >
+          <Button
+            onClick={handleEOButtonClick}
+            style={{
+              background: location.pathname.startsWith('/eo') ? '#ffffff' : '#666666',
+              color: 'black',
+            }}
+          >
+            EO
+          </Button>
+        </Dropdown>
         <Button onClick={() => navigate('/exercise/epm')}>EPM</Button>
         <Button onClick={() => navigate('/exercise/evm')}>EVM</Button>
         <Button onClick={() => navigate('/exercise/emd')}>EMD</Button>
