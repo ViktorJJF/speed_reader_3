@@ -84,7 +84,13 @@ export const NavMenu: React.FC = () => {
         ))}
       </NavContainer>
       <ExerciseButtons>
-        <Button onClick={() => navigate('/exercise/el1')}>EL</Button>
+        <Button
+          onClick={() => navigate('/el1')}
+          style={{ background: location.pathname === '/el1' ? '#ffffff' : '#666666' }}
+        >
+          EL1
+        </Button>
+        <Button onClick={() => navigate('/exercise/el')}>EL</Button>
         <Button onClick={() => navigate('/exercise/eo')}>EO</Button>
         <Button onClick={() => navigate('/exercise/epm')}>EPM</Button>
         <Button onClick={() => navigate('/exercise/evm')}>EVM</Button>
