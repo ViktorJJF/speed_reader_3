@@ -1,35 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { ConfigProvider } from 'antd';
+import { ThemeProvider } from 'styled-components';
+import MainLayout from './layouts/MainLayout';
+import TrainingView from './views/TrainingView';
+import ExerciseView from './views/ExerciseView';
+import { theme } from './assets/styles/theme';
+import { GlobalStyles } from './assets/styles/GlobalStyles';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App: React.FC = () => {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <ThemeProvider theme={theme}>
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: theme.colors.primary,
+            borderRadius: parseInt(theme.borderRadius.small),
+            colorBgContainer: theme.colors.background.card,
+          },
+        }}
+      >
+        <GlobalStyles />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<MainLayout />}>
+              <Route index element={<Navigate to="/training" replace />} />
+              <Route path="training" element={<TrainingView />} />
+              <Route path="exercise/:exerciseId" element={<ExerciseView />} />
+              <Route path="progress" element={<div>Progress View (Coming Soon)</div>} />
+              <Route path="tests" element={<div>Tests View (Coming Soon)</div>} />
+              <Route path="settings" element={<div>Settings View (Coming Soon)</div>} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </ConfigProvider>
+    </ThemeProvider>
+  );
+};
 
-export default App
+export default App;
