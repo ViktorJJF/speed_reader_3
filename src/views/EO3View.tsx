@@ -64,12 +64,13 @@ const WordList = styled.div`
   gap: 10px;
 `;
 
-const WordButton = styled.button<{ $selected?: boolean }>`
+const WordButton = styled.button<{ $selected?: boolean; $isCorrectAnswer?: boolean }>`
   width: 120px;
   height: 40px;
   font-size: 18px;
   border: 1px solid #ccc;
   background: ${(props) => (props.$selected ? '#e6e6e6' : 'white')};
+  color: ${(props) => (props.$isCorrectAnswer ? 'green' : 'black')};
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -297,6 +298,7 @@ const EO3View: React.FC = () => {
                       key={word}
                       onClick={() => handleWordClick('repeated', word)}
                       $selected={repeatedAnswer === word}
+                      $isCorrectAnswer={showResults && word === wordSequence.repeatedWord}
                     >
                       {word}
                     </WordButton>
@@ -317,6 +319,7 @@ const EO3View: React.FC = () => {
                       key={word}
                       onClick={() => handleWordClick('missing', word)}
                       $selected={missingAnswer === word}
+                      $isCorrectAnswer={showResults && word === wordSequence.missingWord}
                     >
                       {word}
                     </WordButton>
