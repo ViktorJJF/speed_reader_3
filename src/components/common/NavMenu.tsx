@@ -83,6 +83,7 @@ export const NavMenu: React.FC = () => {
   const [showELMenu, setShowELMenu] = useState(false);
   const [showEOMenu, setShowEOMenu] = useState(false);
   const [showEPMMenu, setShowEPMMenu] = useState(false);
+  const [showEVMMenu, setShowEVMMenu] = useState(false);
 
   const navItems = [
     {
@@ -127,6 +128,13 @@ export const NavMenu: React.FC = () => {
     { key: 'epm3', label: 'EPM3' },
   ];
 
+  const evmItems = [
+    { key: 'evm1', label: 'EVM1' },
+    { key: 'evm2', label: 'EVM2' },
+    { key: 'evm3', label: 'EVM3' },
+    { key: 'evm4', label: 'EVM4' },
+  ];
+
   const handleELClick = (key: string) => {
     navigate(`/${key}`);
     setShowELMenu(false);
@@ -140,6 +148,11 @@ export const NavMenu: React.FC = () => {
   const handleEPMClick = (key: string) => {
     navigate(`/${key}`);
     setShowEPMMenu(false);
+  };
+
+  const handleEVMClick = (key: string) => {
+    navigate(`/${key}`);
+    setShowEVMMenu(false);
   };
 
   const handleELButtonClick = (e: React.MouseEvent) => {
@@ -157,6 +170,12 @@ export const NavMenu: React.FC = () => {
   const handleEPMButtonClick = (e: React.MouseEvent) => {
     if (!location.pathname.startsWith('/epm')) {
       navigate('/epm1');
+    }
+  };
+
+  const handleEVMButtonClick = (e: React.MouseEvent) => {
+    if (!location.pathname.startsWith('/evm')) {
+      navigate('/evm1');
     }
   };
 
@@ -194,6 +213,20 @@ export const NavMenu: React.FC = () => {
       label: (
         <button
           onClick={() => handleEPMClick(item.key)}
+          className={location.pathname === `/${item.key}` ? 'active' : ''}
+        >
+          {item.label}
+        </button>
+      ),
+    })),
+  };
+
+  const evmMenu = {
+    items: evmItems.map((item) => ({
+      key: item.key,
+      label: (
+        <button
+          onClick={() => handleEVMClick(item.key)}
           className={location.pathname === `/${item.key}` ? 'active' : ''}
         >
           {item.label}
@@ -263,7 +296,23 @@ export const NavMenu: React.FC = () => {
             EPM
           </Button>
         </Dropdown>
-        <Button onClick={() => navigate('/exercise/evm')}>EVM</Button>
+        <Dropdown
+          menu={evmMenu}
+          trigger={['click']}
+          placement="bottomLeft"
+          open={showEVMMenu}
+          onOpenChange={setShowEVMMenu}
+        >
+          <Button
+            onClick={handleEVMButtonClick}
+            style={{
+              background: location.pathname.startsWith('/evm') ? '#ffffff' : '#666666',
+              color: 'black',
+            }}
+          >
+            EVM
+          </Button>
+        </Dropdown>
         <Button onClick={() => navigate('/exercise/emd')}>EMD</Button>
       </ExerciseButtons>
     </Space>
