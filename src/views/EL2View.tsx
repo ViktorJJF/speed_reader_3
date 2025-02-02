@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 const CharacterPairContainer = styled.div`
   display: flex;
   justify-content: center;
-  gap: 200px;
+  gap: 400px;
   font-size: 48px;
   font-weight: bold;
   margin: 40px 0;

@@ -153,7 +153,7 @@ const EO2View: React.FC = () => {
   const { isRunning, level, setLevel, startExercise, stopExercise } = useStore();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [positions] = useState(generatePositions());
-  const [numberSequence] = useState(generateNumbers());
+  const [numberSequence, setNumberSequence] = useState(generateNumbers());
   const [isCompleted, setIsCompleted] = useState(false);
   const [showQuestions, setShowQuestions] = useState(false);
   const [repeatedAnswer, setRepeatedAnswer] = useState<number | null>(null);
@@ -200,6 +200,7 @@ const EO2View: React.FC = () => {
       stopExercise();
       setIsCompleted(false);
     }
+    setNumberSequence(generateNumbers());
   };
 
   const handleNextClick = () => {

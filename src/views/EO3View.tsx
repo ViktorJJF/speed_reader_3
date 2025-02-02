@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useStore } from '../store';
 import { PageHeader, StyledCard, Controls } from '../assets/styles/components';
 import { useNavigate } from 'react-router-dom';
+import eo3Data from '../data/exercises/eo3.json';
 
 const ControlGroup = styled.div`
   display: flex;
@@ -94,10 +95,6 @@ const ResultLabel = styled.div<{ $correct?: boolean }>`
 const VerifyButton = styled(Button)`
   margin-top: 30px;
 `;
-
-// Lista predefinida de palabras
-const AVAILABLE_WORDS = ['bata', 'bota', 'casas', 'casos', 'loco', 'malas', 'mapa', 'mona', 'patos', 'pinos'];
-
 // Generate random positions for the words
 const generatePositions = () => {
   const padding = 100;
@@ -109,59 +106,61 @@ const generatePositions = () => {
   }));
 };
 
-// Generate 8 words where at least one repeats and one is missing
-const generateWords = () => {
-  const words = [];
-  const availableWords = [...AVAILABLE_WORDS];
-
-  // Remove one random word (this will be the missing word)
-  const missingWordIndex = Math.floor(Math.random() * availableWords.length);
-  const missingWord = availableWords[missingWordIndex];
-  availableWords.splice(missingWordIndex, 1);
-
-  // Select one word to repeat
-  const repeatWordIndex = Math.floor(Math.random() * availableWords.length);
-  const repeatWord = availableWords[repeatWordIndex];
-
-  // Add first 6 unique words
-  while (words.length < 6) {
-    if (words.length === repeatWordIndex) {
-      words.push(repeatWord);
-    } else {
-      const index = Math.floor(Math.random() * availableWords.length);
-      const word = availableWords[index];
-      if (word !== repeatWord) {
-        words.push(word);
-        availableWords.splice(index, 1);
-      }
-    }
-  }
-
-  // Add the repeated word again
-  words.push(repeatWord);
-
-  // Add one more random word from the remaining available words
-  const lastIndex = Math.floor(Math.random() * availableWords.length);
-  words.push(availableWords[lastIndex]);
-
-  return {
-    words,
-    repeatedWord: repeatWord,
-    missingWord: missingWord,
-  };
-};
 
 const EO3View: React.FC = () => {
   const navigate = useNavigate();
+  const [availableWords, setAvailableWords] = useState<string[]>([]);
   const { isRunning, level, setLevel, startExercise, stopExercise } = useStore();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [positions] = useState(generatePositions());
-  const [wordSequence] = useState(generateWords());
+  const [wordSequence, setWordSequence] = useState({});
   const [isCompleted, setIsCompleted] = useState(false);
   const [showQuestions, setShowQuestions] = useState(false);
   const [repeatedAnswer, setRepeatedAnswer] = useState<string | null>(null);
   const [missingAnswer, setMissingAnswer] = useState<string | null>(null);
   const [showResults, setShowResults] = useState(false);
+
+  // Generate 8 words where at least one repeats and one is missing
+  function generateWords() {
+    const words = [];
+    const _availableWords = [...availableWords];
+
+    // Remove one random word (this will be the missing word)
+    const missingWordIndex = Math.floor(Math.random() * _availableWords.length);
+    const missingWord = _availableWords[missingWordIndex];
+    _availableWords.splice(missingWordIndex, 1);
+
+    // Select one word to repeat
+    const repeatWordIndex = Math.floor(Math.random() * _availableWords.length);
+    const repeatWord = _availableWords[repeatWordIndex];
+
+    // Add first 6 unique words
+    while (words.length < 6) {
+      if (words.length === repeatWordIndex) {
+        words.push(repeatWord);
+      } else {
+        const index = Math.floor(Math.random() * _availableWords.length);
+        const word = _availableWords[index];
+        if (word !== repeatWord) {
+          words.push(word);
+          _availableWords.splice(index, 1);
+        }
+      }
+    }
+
+    // Add the repeated word again
+    words.push(repeatWord);
+
+    // Add one more random word from the remaining available words
+    const lastIndex = Math.floor(Math.random() * _availableWords.length);
+    words.push(_availableWords[lastIndex]);
+
+    return {
+      words,
+      repeatedWord: repeatWord,
+      missingWord: missingWord,
+    };
+  };
 
   // Calculate display time based on level (lower level = more time)
   const getDisplayTime = () => {
@@ -191,19 +190,27 @@ const EO3View: React.FC = () => {
   }, [isRunning, currentIndex, positions.length, isCompleted]);
 
   const handleStartClick = () => {
-    if (!isRunning) {
-      setCurrentIndex(0);
-      setIsCompleted(false);
-      setShowQuestions(false);
-      setShowResults(false);
-      setRepeatedAnswer(null);
-      setMissingAnswer(null);
-      startExercise();
-    } else {
-      stopExercise();
-      setIsCompleted(false);
-    }
+    selectWords();
+    // if (!isRunning) {
+    //   setCurrentIndex(0);
+    //   setIsCompleted(false);
+    //   setShowQuestions(false);
+    //   setShowResults(false);
+    //   setRepeatedAnswer(null);
+    //   setMissingAnswer(null);
+    //   startExercise();
+    // } else {
+    //   stopExercise();
+    //   setIsCompleted(false);
+    // }
   };
+
+  const selectWords = () => {
+    const randomWords = eo3Data.sort(() => Math.random() - 0.5).slice(0, 8);
+    console.log("Los random words son: ", randomWords);
+    setAvailableWords(randomWords);
+    console.log("Los disponibles son: ", availableWords);
+  }
 
   const handleNextClick = () => {
     setCurrentIndex(0);
@@ -293,7 +300,7 @@ const EO3View: React.FC = () => {
               <QuestionColumn>
                 <QuestionTitle>¿Qué palabra se ha repetido?</QuestionTitle>
                 <WordList>
-                  {AVAILABLE_WORDS.map((word) => (
+                  {availableWords.map((word) => (
                     <WordButton
                       key={word}
                       onClick={() => handleWordClick('repeated', word)}
@@ -314,7 +321,7 @@ const EO3View: React.FC = () => {
               <QuestionColumn>
                 <QuestionTitle>¿Qué palabra no ha salido?</QuestionTitle>
                 <WordList>
-                  {AVAILABLE_WORDS.map((word) => (
+                  {availableWords.map((word) => (
                     <WordButton
                       key={word}
                       onClick={() => handleWordClick('missing', word)}
